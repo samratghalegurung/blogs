@@ -7,4 +7,4 @@ Hi, I'm Samrat Ghale. I write about building software, game engines, and
 graphics programming.
 
 This site is built with [Hugo](https://gohugo.io/) and the
-[Whiteplain](https://github.com/taikii/whiteplain) theme.
+[Paperesque](https://github.com/capnfabs/paperesque) theme.

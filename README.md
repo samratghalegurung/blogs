@@ -1,35 +1,39 @@
 # Samrat's blog
 
-A Hugo blog using the [Whiteplain](https://github.com/taikii/whiteplain) theme,
+A Hugo blog using the [Paperesque](https://github.com/capnfabs/paperesque) theme,
 written in [Obsidian](https://obsidian.md/) and deployed with GitHub + Cloudflare Workers.
 
 ## Structure
 
 ```
 content/
-  _index.md              # home page intro
+  _index.md              # homepage: intro sidebar + displayed section
   blog/
     _index.md            # /blog/ section
     *.md                 # standalone blog posts
   gameengine/
     _index.md            # /gameengine/ series hub
     intro.md
-  about/
-    _index.md            # /about/ page
+  series/
+    creating-a-game-engine/
+      _index.md          # series intro (rendered by layouts/term.html)
+  about.md               # /about/ page
 layouts/                 # local overrides of the theme's templates
-static/                  # optional favicon / social share image
+static/                  # optional favicons / social images
 archetypes/              # front matter templates for new posts
 hugo.toml                # site configuration
 ```
 
-Posts are grouped into a series through the `series` front matter field. The
-theme automatically renders a series box on each post and generates a page at
-`/series/<series-name>/`. The `/gameengine/` section is the curated hub for the
-game engine series.
+The homepage is configured in `content/_index.md` with
+`display_section = "gameengine"`, so it shows the game engine posts with the
+intro in the sidebar. The top-right links are configured with
+`[[params.topmenu]]` in `hugo.toml`.
 
-The home page lists all posts. `/blog/` is available as a container for
-standalone posts but is intentionally not in the header navigation. The theme's
-demo uses the same pattern with its `posts/` folder.
+Posts are grouped into a series through the `series` front matter field. The
+theme has no built-in series box, so `layouts/_partials/single-footer-customisation.html`
+adds a "Part of the series" link to each post. The series page at
+`/series/<series-name>/` is rendered by `layouts/term.html` and shows the series
+intro from `content/series/<series-name>/_index.md`.
 
 ## Local development
 
@@ -71,8 +75,8 @@ to publish.
 +++
 date = '2026-11-08T18:14:11+05:45'
 draft = false
-title = 'Write a Game Engine'
-slug = 'write-a-game-engine'   # optional, defaults to the filename
+title = 'Intro'
+slug = 'intro'                 # optional, defaults to the filename
 description = 'Short summary used for SEO and social cards.'
 tags = ['odin', 'game-engine']
 categories = ['Game Engine']
@@ -81,13 +85,14 @@ weight = 1                     # controls ordering inside the section
 +++
 ```
 
-The `series` value must match across posts for them to appear together in the
-series box and on the series page.
+The `series` value must match across posts for them to appear together on the
+series page.
 
 ### Pages
 
-- **About** — edit `content/about/_index.md`. Author details and social links come
-  from `[params.author]` in `hugo.toml`.
+- **About** — edit `content/about.md`.
+- **Homepage** — edit `content/_index.md`. Its content renders in the sidebar;
+  `display_section` selects which section's posts appear beside it.
 
 ## Obsidian
 
@@ -95,19 +100,25 @@ The repository root is an Obsidian vault (`.obsidian/` is git-ignored). If the
 vault feels noisy because it also indexes `themes/` and `public/`, open the
 `content/` folder as the vault instead — Hugo only reads Markdown from there.
 
-Mermaid code blocks render as diagrams in the browser. `layouts/partials/head_custom.html`
+Mermaid code blocks render as diagrams in the browser. `layouts/_partials/head-customisation.html`
 loads Mermaid only on pages that contain a `mermaid` code block, and
 `layouts/_default/_markup/render-codeblock-mermaid.html` converts the block into
 a diagram element.
 
 ## Theme notes
 
-The theme is a git submodule at `themes/whiteplain`.
+The theme is a git submodule at `themes/paperesque` (branch `mainline`).
 
-`layouts/_default/single.html` is a local override of the theme's single-page
-template. It fixes the series lookup: current Hugo versions keep spaces in
-taxonomy keys, while the upstream theme assumes hyphenated keys. Keep this
-override in mind when updating the theme.
+Local overrides:
+
+- `layouts/term.html` — adds the series intro above the post list.
+- `layouts/404.html` — required for Cloudflare's `not_found_handling = "404-page"`.
+- `layouts/_partials/homepage_display_section.html` — fixes the theme's mismatched heading tag.
+- `layouts/_partials/head-customisation.html` — conditional Mermaid loader.
+- `layouts/_partials/single-footer-customisation.html` — "Part of the series" link.
+
+Paperesque compiles its CSS and JavaScript with Hugo Pipes, so the standard
+(non-extended) Hugo build is enough.
 
 ## Deploying to Cloudflare (Workers)
 
@@ -153,8 +164,10 @@ see the deploy-hook section of the Hugo documentation linked above.
 ## Things to customize
 
 - `baseURL` in `hugo.toml` — currently `https://example.com/`.
-- `title` / `copyright` / `[params.author]` in `hugo.toml`.
-- `static/favicon.ico` and `static/images/share.png` if you want a favicon and
-  social card; then uncomment `favicon` / `logo` in `hugo.toml`.
-- `static/css/custom.css` and `static/js/custom.js` for theme overrides.
-- The home intro in `content/_index.md` and the About page.
+- `title` / `copyright` / `[params] author` in `hugo.toml`.
+- Paperesque expects these files in `static/`: `favicon.ico`, `apple-touch-icon.png`,
+  `favicon-32x32.png`, `favicon-16x16.png`, `site.webmanifest`, and
+  `safari-pinned-tab.svg`. Add your own, or override
+  `layouts/_partials/meta.html` and `layouts/baseof.html` to remove the links.
+- Add custom CSS/JS through `layouts/_partials/head-customisation.html`.
+- The homepage sidebar in `content/_index.md` and the About page.

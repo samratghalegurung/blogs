@@ -1,0 +1,10 @@
+{{ with .Params.series }}
+<div class="nav-bkg-50 content-container-narrow-pad bottom-links text-0p75 drop-shadow">
+  <p>
+    Part of the series:
+    {{ range . }}
+    <a href="{{ printf "series/%s/" (urlize .) | relURL }}">{{ . }}</a>
+    {{ end }}
+  </p>
+</div>
+{{ end }}

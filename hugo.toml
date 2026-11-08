@@ -1,94 +1,64 @@
 # Production URL of the site.
-# TODO: replace with your real domain before deploying to Cloudflare Pages,
-# e.g. baseURL = "https://blog.samratghale.com/"
+# TODO: replace with your real domain before deploying to Cloudflare.
 baseURL = "https://example.com/"
 
-theme = "whiteplain"
+theme = "paperesque"
 
 # Site metadata.
 title = "Samrat Ghale"
-copyright = "&copy; Copyright 2026, Samrat Ghale"
+copyright = "© 2026 Samrat Ghale"
 locale = "en-US"
 defaultContentLanguage = "en"
 
 enableRobotsTXT = true
 
 [permalinks]
-  blog = "/blog/:slug/"
   gameengine = "/gameengine/:slug/"
+  blog = "/blog/:slug/"
 
-# Whiteplain uses these three taxonomies. `series` powers the series box on
-# posts and the /series/ pages.
+# Paperesque uses tags and categories. `series` groups the game engine posts.
 [taxonomies]
-  category = "categories"
   tag = "tags"
+  category = "categories"
   series = "series"
 
 [params]
+  author = "Samrat Ghale"
   description = "Notes on game engines, graphics programming, and software."
 
-  # Optional: add static/favicon.ico and uncomment.
-  # favicon = "favicon.ico"
+  # Footnote margin notes are on by default.
+  # disableMarginNotes = true
 
-  # Optional: add an image (e.g. static/images/share.png) and uncomment.
-  # logo = "images/share.png"
-
-  # Load Font Awesome from its CDN instead of the bundled copy.
-  # useCDN = true
-
-  # Date format. Defaults to "January 2, 2006".
-  # dateFormat = "2006-01-02"
-
-# Displayed on the About page.
-[params.author]
-  name = "Samrat Ghale"
-  github = "SamratGhale"
-
-# Header navigation.
-[[menu.main]]
-  name = "Game Engine"
-  identifier = "gameengine"
-  url = "/gameengine/"
+# Links in the top-right corner of every page.
+[[params.topmenu]]
+  name = "blog"
+  url = "blog/"
   weight = 1
 
-[[menu.main]]
-  name = "Series"
-  identifier = "series"
-  url = "/series/"
+[[params.topmenu]]
+  name = "series"
+  url = "series/"
   weight = 2
 
-[[menu.main]]
-  name = "Tags"
-  identifier = "tags"
-  url = "/tags/"
+[[params.topmenu]]
+  name = "about"
+  url = "about/"
   weight = 3
 
-[[menu.main]]
-  name = "About"
-  identifier = "about"
-  url = "/about/"
+[[params.topmenu]]
+  name = "rss"
+  url = "index.xml"
   weight = 4
 
-# Footer navigation.
-[[menu.footer]]
-  name = "About"
-  identifier = "about"
-  url = "/about/"
-  weight = 1
-
-# Configure syntax highlighting. Whiteplain ships a class-based monokai
-# stylesheet (static/css/syntax.css), so emit classes instead of inline styles.
-# See https://gohugo.io/configuration/markup/#highlight
+# Paperesque renders raw HTML in Markdown and ships a class-based syntax
+# highlighting stylesheet (assets/css/syntax.css).
 [markup]
+  [markup.goldmark.renderer]
+    unsafe = true
   [markup.highlight]
     noClasses = false
-    style = 'monokai'
-    lineNos = true
-    lineNumbersInTable = false
-    codeFences = true
 
 # Keep processed images in the cache directory used by Cloudflare Workers.
-# See https://gohugo.io/host-and-deploy/deploy-to-cloudflare/
 [caches]
   [caches.images]
     dir = ':cacheDir/images'
