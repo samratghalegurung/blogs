@@ -1,3 +1,50 @@
+{{/* Pin Paperesque to its light palette, regardless of the OS color scheme. */}}
+<style>
+  :root {
+    color-scheme: light;
+
+    --color-text: #212529;
+    --color-fg-darken: #21252922;
+    --color-code-inline-bg: #eeeeee;
+
+    --color-text-for-darkbg: white;
+
+    --color-border-generic: #ccc;
+
+    --color-boxshadow: #777777;
+    --color-quote-border: #777;
+
+    --color-pre-text: #f8f8f2;
+    --color-pre-bg: #272822;
+
+    --color-sheet-bg: white;
+    --color-desktop-bg: #fffdf7;
+
+    --color-meta-text: #777;
+
+    --color-kbd-bg: #333;
+    --color-hr: #AAA;
+    --color-caption-text: #5e5e5e;
+    --color-btn-border: #777;
+    --color-btn-hover-bg: #EDEDED;
+
+    --color-draft-bg-stripe: #ffd4a3;
+
+    --color-header-brand-primary: #00223E;
+    --color-header-brand-secondary-ddopacity: #00223EDD;
+    --color-header-brand-secondary: #FFA17F;
+
+    --color-link-text: #007bff;
+    --color-link-hover: #0056B3;
+
+    --color-nav-text: var(--color-text-for-darkbg);
+    --color-timestamp-bkg-primary: var(--color-link-text);
+    --color-timestamp-bkg-secondary: var(--color-link-hover);
+    --color-timestamp-text: var(--color-text-for-darkbg);
+  }
+</style>
+<meta name="color-scheme" content="light" />
+
 {{ if strings.Contains .RawContent "```mermaid" }}
 <script type="module">
   import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";

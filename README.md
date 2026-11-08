@@ -120,6 +120,11 @@ Local overrides:
 Paperesque compiles its CSS and JavaScript with Hugo Pipes, so the standard
 (non-extended) Hugo build is enough.
 
+The site is pinned to Paperesque's light palette in
+`layouts/_partials/head-customisation.html`, so it stays light even when the
+operating system is in dark mode. Remove the `:root` block in that file to follow
+the OS color scheme again.
+
 ## Deploying to Cloudflare (Workers)
 
 This project uses the setup from
