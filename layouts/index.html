@@ -1,0 +1,14 @@
+{{ define "main" }}
+  <div class="main" role="main">
+    {{- with .Content }}
+    <div class="article-content home-intro">{{ . }}</div>
+    {{- end }}
+    {{- $paginator := .Paginate .Site.RegularPages.ByDate.Reverse }}
+    <section class="list home-list">
+      {{- range $paginator.Pages }}
+      {{ partial "article-card.html" . }}
+      {{- end }}
+    </section>
+    {{ template "_internal/pagination.html" . }}
+  </div>
+{{ end }}

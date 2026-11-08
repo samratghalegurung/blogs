@@ -1,0 +1,11 @@
+# Obsidian
+.obsidian/
+
+# Hugo build output
+public/
+resources/_gen/
+.hugo_build.lock
+
+# OS junk
+.DS_Store
+Thumbs.db
