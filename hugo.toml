@@ -76,8 +76,9 @@ enableRobotsTXT = true
   url = "/about/"
   weight = 1
 
-# Whiteplain ships a class-based monokai stylesheet (static/css/syntax.css),
-# so tell Hugo to emit classes instead of inline styles.
+# Configure syntax highlighting. Whiteplain ships a class-based monokai
+# stylesheet (static/css/syntax.css), so emit classes instead of inline styles.
+# See https://gohugo.io/configuration/markup/#highlight
 [markup]
   [markup.highlight]
     noClasses = false
@@ -85,3 +86,9 @@ enableRobotsTXT = true
     lineNos = true
     lineNumbersInTable = false
     codeFences = true
+
+# Keep processed images in the cache directory used by Cloudflare Workers.
+# See https://gohugo.io/host-and-deploy/deploy-to-cloudflare/
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'

@@ -1,8 +1,8 @@
 +++
 date = '2026-11-08T18:14:11+05:45'
 draft = false
-title = 'Write a Game Engine'
-slug = 'write-a-game-engine'
+title = 'Intro'
+slug = 'Intro'
 description = 'Starting a from-scratch game engine series in Odin: goals, architecture, and the libraries we will use.'
 tags = ['odin', 'game-engine', 'opengl']
 categories = ['Game Engine']

@@ -1,0 +1,13 @@
+{
+  // Change this to your Cloudflare Worker project name.
+  "name": "samrat-ghale-blog",
+  // Set this to today's date in YYYY-MM-DD format.
+  "compatibility_date": "2026-11-08",
+  "build": {
+    "command": "chmod a+x build.sh && ./build.sh"
+  },
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "404-page"
+  }
+}

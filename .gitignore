@@ -6,6 +6,12 @@ public/
 resources/_gen/
 .hugo_build.lock
 
+# Cloudflare / Wrangler
+.wrangler/
+.cache/
+.dev.vars
+node_modules/
+
 # OS junk
 .DS_Store
 Thumbs.db

@@ -1,7 +1,7 @@
 # Samrat's blog
 
 A Hugo blog using the [Whiteplain](https://github.com/taikii/whiteplain) theme,
-written in [Obsidian](https://obsidian.md/) and deployed with GitHub + Cloudflare Pages.
+written in [Obsidian](https://obsidian.md/) and deployed with GitHub + Cloudflare Workers.
 
 ## Structure
 
@@ -13,7 +13,7 @@ content/
     *.md                 # standalone blog posts
   gameengine/
     _index.md            # /gameengine/ series hub
-    write-a-game-engine.md
+    intro.md
   about/
     _index.md            # /about/ page
 layouts/                 # local overrides of the theme's templates
@@ -109,28 +109,46 @@ template. It fixes the series lookup: current Hugo versions keep spaces in
 taxonomy keys, while the upstream theme assumes hyphenated keys. Keep this
 override in mind when updating the theme.
 
-## Deploying to Cloudflare Pages
+## Deploying to Cloudflare (Workers)
 
-1. Push this repo to GitHub.
-2. In the Cloudflare dashboard, go to **Workers & Pages → Create → Pages →
-   Connect to Git** and select the repo.
-3. Use these build settings:
+This project uses the setup from
+<https://gohugo.io/host-and-deploy/deploy-to-cloudflare/>. The files are already
+included:
 
-   | Setting | Value |
-   | --- | --- |
-   | Framework preset | Hugo |
-   | Build command | `git submodule update --init --recursive && hugo --gc --minify` |
-   | Build output directory | `public` |
-   | Root directory | `/` |
+- `wrangler.jsonc` — Worker name, compatibility date, build command, and the
+  `public/` asset directory.
+- `build.sh` — installs the pinned Hugo version, initializes the theme
+  submodule, and builds the site.
+- `[caches]` in `hugo.toml` — stores processed images in the Cloudflare build
+  cache.
 
-4. Add an environment variable `HUGO_VERSION = 0.169.0` (or whatever version
-   you use locally).
-5. Set the real domain in `hugo.toml` → `baseURL` before the first production
-   deploy. Cloudflare preview URLs will still work, but absolute links, RSS, and
-   social cards use `baseURL`.
+1. Edit `wrangler.jsonc` and set `name` to your Worker project name. Keep
+   `compatibility_date` at today's date in `YYYY-MM-DD` format.
+2. Commit and push the repository to GitHub.
+3. In the Cloudflare dashboard, press **Add** and select **Workers**.
+4. Under **Ship something new**, press **Connect GitHub**, authorize Cloudflare,
+   and select the repository.
+5. On **Set up your application**:
+   - **Project name**: the same name used in `wrangler.jsonc`.
+   - **Build command**: leave blank.
+   - **Deploy command**: `npx wrangler deploy`.
+   - Open **Advanced settings** and add `SKIP_DEPENDENCY_INSTALL = true`.
+6. Press **Deploy**.
+7. Add your custom domain in the Worker's **Settings → Domains & Routes**.
+8. Set the real site URL in `hugo.toml` → `baseURL` so absolute links, RSS, and
+   social cards use the production domain.
 
-The theme is a git submodule, hence the `git submodule update` step in the build
-command.
+`build.sh` installs Hugo `0.169.0` and runs
+`hugo build --gc --minify --cleanDestinationDir`. The theme is a submodule, so
+the script also runs `git submodule update --init --recursive`.
+
+The Cloudflare build cache is optional. To enable it, the project needs both
+`package.json` and `package-lock.json`, and the cache must be enabled in
+**Settings → Build → Build cache**. This project currently has no Node.js
+dependencies, so the cache is disabled by default.
+
+For scheduled rebuilds (for example, if you later add `resources.GetRemote`),
+see the deploy-hook section of the Hugo documentation linked above.
 
 ## Things to customize
 
