@@ -6,5 +6,4 @@ subtitle = ''
 tags = ['odin', 'game-engine']
 categories = ['Game Engine']
 series = ['Creating a Game Engine']
-weight = 0
 +++

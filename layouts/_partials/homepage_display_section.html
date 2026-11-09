@@ -17,7 +17,7 @@
             <h2 class="sidepull-not-when-sidebar-shown" style="margin-bottom: 1em">{{.}}</h2>
         {{ end }}
         <ul id="list" class="list-unstyled list-of-titles">
-        {{ range $section.Data.Pages.ByDate.Reverse }}
+        {{ range $section.Data.Pages.ByDate }}
         {{- if .Param "mostlyHidden" -}}
           {{- continue -}}
         {{- end -}}

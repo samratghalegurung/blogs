@@ -7,7 +7,7 @@ description = 'Starting a from-scratch game engine series in Odin: goals, archit
 tags = ['odin', 'game-engine', 'opengl']
 categories = ['Game Engine']
 series = ['Creating a Game Engine']
-weight = 1
+weight = 2
 +++
 
 In this blog series we will create a game engine from "scratch". This is indented for tutorial purpose but you could use it for a real project.

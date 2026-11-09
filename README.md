@@ -81,12 +81,12 @@ description = 'Short summary used for SEO and social cards.'
 tags = ['odin', 'game-engine']
 categories = ['Game Engine']
 series = ['Creating a Game Engine']
-weight = 1                     # controls ordering inside the section
 +++
 ```
 
 The `series` value must match across posts for them to appear together on the
-series page.
+series page. Section and series lists are ordered by date, oldest first, so the
+intro appears before later posts.
 
 ### Pages
 
@@ -112,6 +112,8 @@ The theme is a git submodule at `themes/paperesque` (branch `mainline`).
 Local overrides:
 
 - `layouts/term.html` — adds the series intro above the post list.
+- `layouts/list.html` — orders section lists oldest-first by date.
+- `layouts/single.html` — chronological Previous/Next links.
 - `layouts/404.html` — required for Cloudflare's `not_found_handling = "404-page"`.
 - `layouts/_partials/homepage_display_section.html` — fixes the theme's mismatched heading tag.
 - `layouts/_partials/head-customisation.html` — conditional Mermaid loader.

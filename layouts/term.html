@@ -6,7 +6,7 @@
     <div class="article-body" style="margin-bottom: 2em">{{ . }}</div>
     {{ end }}
     <ul id="list" class="list-unstyled list-of-titles">
-      {{ range .Data.Pages.ByDate.Reverse }}
+      {{ range .Data.Pages.ByDate }}
         {{- if .Param "mostlyHidden" -}}
           {{- continue -}}
         {{- end -}}
