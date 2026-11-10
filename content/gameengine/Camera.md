@@ -210,4 +210,86 @@ camera_convert_world_to_screen :: proc(
 Here we've created functions to convert from screen coordinate to world coordinate and vice versa. We normalize the input points into u/v coordinates in between 0 and 1. Then we multiply it with the camera's or screen's bounds.
 
 
+### Projection matrix
+We need to create functions to generate projection matrix to pass on to OpenGL shaders. This is to convert the normalized device cordinates.
+Please refer to [this](http://www.songho.ca/opengl/gl_projectionmatrix.html) ,[learnopengl](https://learnopengl.com/Getting-started/Transformations)document for more information. 
 
+
+```odin
+
+PI :: 3.14159265358979323846
+DEG2RAD :: PI / 180.0
+RAD2DEG :: 180.0 / PI
+
+orthographic_matrix :: proc(cam: ^Camera) -> matrix[4,4]f32{
+
+	left  :f32= 0
+	right :f32= f32(cam.width)
+
+	bottom :f32= f32(cam.height)
+	top    :f32= 0
+
+	near : f32 = 1
+	far  : f32 = -1
+
+	m: matrix[4,4]f32
+
+	m[0][0] = 2.0 / (right - left)
+	m[0][1] = 0.0
+	m[0][2] = 0.0
+	m[0][3] = 0.0
+
+	m[1][0] = 0.0
+	m[1][1] = 2.0 / (top - bottom)
+	m[1][2] = 0.0
+	m[1][3] = 0.0
+
+	m[2][0] = 0.0
+	m[2][1] = 0.0
+	m[2][2] = -2.0 / (far - near)
+	m[2][3] = 0.0
+
+	m[3][0] = -(right + left) / (right - left)
+	m[3][1] = -(top + bottom) / (top - bottom)
+	m[3][2] = -(far + near) / (far - near)
+	m[3][3] = 1.0
+	return m
+}
+
+
+//Convert from world coordinates to normalized device coordinates
+// http://www.songho.ca/opengl/gl_projectionmatrix.html
+camera_build_project_matrix :: proc(
+	cam : ^Camera,
+	z_bias : f32,
+	) -> matrix[4, 4]f32 {
+
+	if cam.type == .ORTHO do return orthographic_matrix(cam)
+
+	m : matrix[4, 4]f32
+
+	mat_rot := linalg.matrix4_rotate_f32(DEG2RAD * cam.rotation, {0, 0, 1})
+
+	ratio := f32(cam.width) / f32(cam.height)
+	extents : [2]f32 = {cam.zoom * ratio, cam.zoom}
+	lower := cam.center - extents
+	upper := cam.center + extents
+
+	w := upper.x - lower.x
+	h := upper.y - lower.y
+
+	m[0][0] = 2.0 / w
+	m[1][1] = 2.0 / h
+	m[2][2] = -1
+	m[3][0] = -2.0 * cam.center.x / w
+	m[3][1] = -2.0 * cam.center.y / h
+	m[3][2] = z_bias
+	m[3][3] = 1
+
+	return m * mat_rot
+}
+
+```
+
+
+PI, DEG2RAD and RAD2DEG are some helper constants I copied from box2d.

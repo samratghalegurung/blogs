@@ -84,6 +84,23 @@ The `series` value must match across posts for them to appear together on the
 series page. Section and series lists are ordered by date, oldest first, so the
 intro appears before later posts.
 
+### Images
+
+Images pasted into `content/gameengine/` next to `_index.md` are published at
+the section root, e.g. `/gameengine/Pasted%20image%2020261110144359.png`. From a
+post at `/gameengine/<post>/`, reference them with that absolute path.
+
+For automatic relative image links, convert the post into a page bundle:
+
+```text
+content/gameengine/draw/
+  index.md
+  Pasted image 20261110144359.png
+```
+
+Then `![](Pasted%20image%2020261110144359.png)` works because Hugo publishes the
+image alongside the page.
+
 ### Pages
 
 - **About** — edit `content/about.md`.
