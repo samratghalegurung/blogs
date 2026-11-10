@@ -1,11 +1,11 @@
 # Production URL of the site.
-# TODO: replace with your real domain before deploying to Cloudflare.
-baseURL = "https://example.com/"
+baseURL = "https://samratghale.com.np/"
 
-theme = "paperesque"
+theme = "black-and-light"
 
 # Site metadata.
 title = "Samrat Ghale"
+author = "Samrat Ghale"
 copyright = "© 2026 Samrat Ghale"
 locale = "en-US"
 defaultContentLanguage = "en"
@@ -16,49 +16,52 @@ enableRobotsTXT = true
   gameengine = "/gameengine/:slug/"
   blog = "/blog/:slug/"
 
-# Paperesque uses tags and categories. `series` groups the game engine posts.
+# Tags, categories, and the game engine series.
 [taxonomies]
   tag = "tags"
   category = "categories"
   series = "series"
 
 [params]
-  author = "Samrat Ghale"
+  sitename = "Samrat Ghale"
   description = "Notes on game engines, graphics programming, and software."
+  dateform = "January 2, 2006"
 
-  # Footnote margin notes are on by default.
-  # With the wider column, floating notes can overflow on typical laptop
-  # screens, so keep footnotes inline. Remove this to re-enable margin notes.
-  disableMarginNotes = true
+  # Set to true to avoid loading Google Fonts.
+  # disableWebFonts = true
 
-# Links in the top-right corner of every page.
-[[params.topmenu]]
-  name = "blog"
-  url = "blog/"
+# Header navigation.
+[[menu.main]]
+  name = "Game Engine"
+  url = "/gameengine/"
   weight = 1
 
-[[params.topmenu]]
-  name = "series"
-  url = "series/"
+[[menu.main]]
+  name = "Blog"
+  url = "/blog/"
   weight = 2
 
-[[params.topmenu]]
-  name = "about"
-  url = "about/"
+[[menu.main]]
+  name = "Series"
+  url = "/series/"
   weight = 3
 
-[[params.topmenu]]
-  name = "rss"
-  url = "index.xml"
+[[menu.main]]
+  name = "About"
+  url = "/about/"
   weight = 4
 
-# Paperesque renders raw HTML in Markdown and ships a class-based syntax
-# highlighting stylesheet (assets/css/syntax.css).
+[[menu.main]]
+  name = "RSS"
+  url = "/index.xml"
+  weight = 5
+
 [markup]
   [markup.goldmark.renderer]
     unsafe = true
   [markup.highlight]
-    noClasses = false
+    style = "bw"
+    noClasses = true
 
 # Keep processed images in the cache directory used by Cloudflare Workers.
 [caches]

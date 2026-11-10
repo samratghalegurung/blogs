@@ -1,0 +1,34 @@
+{{ partial "header.html" . }}
+
+<section id=content>
+  <h1>{{ if .Params.heading }} {{ .Params.heading }} {{ else }} {{ .Title }} {{ end }}</h1>
+
+  {{ if .Params.date }}
+    <div id=sub-header>
+      {{ .Date.Format (.Site.Params.dateform | default "January 2006") }} · {{ .ReadingTime }} minute read
+    </div>
+  {{ end }}
+
+  <div class="entry-content">
+    {{ .Content }}
+  </div>
+
+  {{ with .Params.series }}
+  <p>
+    Part of the series:
+    <a href="{{ printf "series/%s/" (urlize (index . 0)) | relURL }}">{{ index . 0 }}</a>
+  </p>
+  {{ end }}
+
+  {{ if not .Parent.IsHome }}
+  {{ $pages := .CurrentSection.Pages.ByDate }}
+  {{ $prev := $pages.Next . }}
+  {{ $next := $pages.Prev . }}
+  <div id=links>
+    {{ with $prev }}<a href="{{ .RelPermalink }}">&laquo;&nbsp;{{ .Title }}</a>{{ end }}
+    {{ with $next }}<a href="{{ .RelPermalink }}">{{ .Title }}&nbsp;&raquo;</a>{{ end }}
+  </div>
+  {{ end }}
+</section>
+
+{{ partial "footer.html" . }}

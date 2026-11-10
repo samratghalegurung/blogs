@@ -1,0 +1,23 @@
+{{ partial "header.html" . }}
+
+<section id=content>
+  {{ with .Content }}
+  <div class="entry-content">{{ . }}</div>
+  {{ end }}
+
+  <ul class=posts_listing>
+    {{ $posts := where .Site.RegularPages "Section" "ne" "" }}
+    {{ range $posts.ByDate }}
+      <li>
+        <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+        <div class=date>
+          {{ if not .Date.IsZero }}
+            {{ .Date.Format (.Site.Params.dateform | default "January 2006") }}
+          {{ end }}
+        </div>
+      </li>
+    {{ end }}
+  </ul>
+</section>
+
+{{ partial "footer.html" . }}

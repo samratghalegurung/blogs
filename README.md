@@ -1,22 +1,22 @@
 # Samrat's blog
 
-A Hugo blog using the [Paperesque](https://github.com/capnfabs/paperesque) theme,
-written in [Obsidian](https://obsidian.md/) and deployed with GitHub + Cloudflare Workers.
+A Hugo blog using the [Black & Light](https://github.com/davidhampgonsalves/hugo-black-and-light-theme)
+theme, written in [Obsidian](https://obsidian.md/) and deployed with GitHub + Cloudflare Workers.
 
 ## Structure
 
 ```
 content/
-  _index.md              # homepage: intro sidebar + displayed section
+  _index.md              # homepage intro
   blog/
     _index.md            # /blog/ section
     *.md                 # standalone blog posts
   gameengine/
     _index.md            # /gameengine/ series hub
-    intro.md
+    *.md                 # series posts
   series/
     creating-a-game-engine/
-      _index.md          # series intro (rendered by layouts/term.html)
+      _index.md          # series intro
   about.md               # /about/ page
 layouts/                 # local overrides of the theme's templates
 static/                  # optional favicons / social images
@@ -24,16 +24,12 @@ archetypes/              # front matter templates for new posts
 hugo.toml                # site configuration
 ```
 
-The homepage is configured in `content/_index.md` with
-`display_section = "gameengine"`, so it shows the game engine posts with the
-intro in the sidebar. The top-right links are configured with
-`[[params.topmenu]]` in `hugo.toml`.
+The homepage lists every post in a content section, oldest first. Root-level
+pages such as `about.md` are excluded from that list.
 
 Posts are grouped into a series through the `series` front matter field. The
-theme has no built-in series box, so `layouts/_partials/single-footer-customisation.html`
-adds a "Part of the series" link to each post. The series page at
-`/series/<series-name>/` is rendered by `layouts/term.html` and shows the series
-intro from `content/series/<series-name>/_index.md`.
+post template adds a "Part of the series" link, and the series page at
+`/series/<series-name>/` lists its posts in chronological order.
 
 ## Local development
 
@@ -46,7 +42,7 @@ Open <http://localhost:1313/>. `-D` includes drafts.
 Build the production site with:
 
 ```bash
-hugo --gc --minify --cleanDestinationDir
+hugo build --gc --minify --cleanDestinationDir
 ```
 
 The output is written to `public/` (git-ignored).
@@ -91,8 +87,7 @@ intro appears before later posts.
 ### Pages
 
 - **About** — edit `content/about.md`.
-- **Homepage** — edit `content/_index.md`. Its content renders in the sidebar;
-  `display_section` selects which section's posts appear beside it.
+- **Homepage** — edit `content/_index.md`.
 
 ## Obsidian
 
@@ -100,32 +95,29 @@ The repository root is an Obsidian vault (`.obsidian/` is git-ignored). If the
 vault feels noisy because it also indexes `themes/` and `public/`, open the
 `content/` folder as the vault instead — Hugo only reads Markdown from there.
 
-Mermaid code blocks render as diagrams in the browser. `layouts/_partials/head-customisation.html`
+Mermaid code blocks render as diagrams in the browser. `layouts/partials/header.html`
 loads Mermaid only on pages that contain a `mermaid` code block, and
 `layouts/_default/_markup/render-codeblock-mermaid.html` converts the block into
 a diagram element.
 
 ## Theme notes
 
-The theme is a git submodule at `themes/paperesque` (branch `mainline`).
+The theme is a git submodule at `themes/black-and-light`. It is licensed under
+GPL-3.0; check the license before redistributing the theme code itself.
 
 Local overrides:
 
-- `layouts/term.html` — adds the series intro above the post list.
-- `layouts/list.html` — orders section lists oldest-first by date.
-- `layouts/single.html` — chronological Previous/Next links.
-- `layouts/404.html` — required for Cloudflare's `not_found_handling = "404-page"`.
-- `layouts/_partials/homepage_display_section.html` — fixes the theme's mismatched heading tag.
-- `layouts/_partials/head-customisation.html` — conditional Mermaid loader.
-- `layouts/_partials/single-footer-customisation.html` — "Part of the series" link.
+- `layouts/partials/header.html` — forces the light palette, fixes the language
+  attribute, adds favicons, and conditionally loads Mermaid.
+- `layouts/index.html` — homepage intro and chronological post list.
+- `layouts/_default/list.html` — section and term lists (oldest first).
+- `layouts/_default/terms.html` — taxonomy term overview pages.
+- `layouts/_default/single.html` — series link and chronological Previous/Next.
+- `layouts/_default/_markup/render-codeblock-mermaid.html` — Mermaid block output.
 
-Paperesque compiles its CSS and JavaScript with Hugo Pipes, so the standard
-(non-extended) Hugo build is enough.
-
-The site is pinned to Paperesque's light palette in
-`layouts/_partials/head-customisation.html`, so it stays light even when the
-operating system is in dark mode. Remove the `:root` block in that file to follow
-the OS color scheme again.
+Black & Light is text-oriented and caps the body at `700px`. To widen it, add a
+`body { max-width: ... }` rule after the theme styles in
+`layouts/partials/header.html`.
 
 ## Deploying to Cloudflare (Workers)
 
@@ -153,8 +145,9 @@ included:
    - Open **Advanced settings** and add `SKIP_DEPENDENCY_INSTALL = true`.
 6. Press **Deploy**.
 7. Add your custom domain in the Worker's **Settings → Domains & Routes**.
-8. Set the real site URL in `hugo.toml` → `baseURL` so absolute links, RSS, and
-   social cards use the production domain.
+8. Set the real site URL in `hugo.toml` → `baseURL` **or** add a Cloudflare
+   environment variable `BASE_URL = https://your-domain/`. `build.sh` passes
+   `BASE_URL` to Hugo as `--baseURL` when it is set.
 
 `build.sh` installs Hugo `0.169.0` and runs
 `hugo build --gc --minify --cleanDestinationDir`. The theme is a submodule, so
@@ -165,24 +158,15 @@ The Cloudflare build cache is optional. To enable it, the project needs both
 **Settings → Build → Build cache**. This project currently has no Node.js
 dependencies, so the cache is disabled by default.
 
-For scheduled rebuilds (for example, if you later add `resources.GetRemote`),
-see the deploy-hook section of the Hugo documentation linked above.
-
 ## Things to customize
 
-- `baseURL` in `hugo.toml` — currently `https://example.com/`.
-- `title` / `copyright` / `[params] author` in `hugo.toml`.
-- Paperesque expects these files in `static/`: `favicon.ico`, `apple-touch-icon.png`,
-  `favicon-32x32.png`, `favicon-16x16.png`, `site.webmanifest`, and
-  `safari-pinned-tab.svg`. Add your own, or override
-  `layouts/_partials/meta.html` and `layouts/baseof.html` to remove the links.
-- Add custom CSS/JS through `layouts/_partials/head-customisation.html`.
-- The homepage sidebar in `content/_index.md` and the About page.
-- The main column is widened to `67.5rem` (1.5× Paperesque's `45rem`) in
-  `layouts/_partials/head-customisation.html`. Change the `67.5rem` value there
-  to adjust it.
-- Floating footnote margin notes are disabled with `disableMarginNotes = true`
-  because the wider column leaves less room for them on laptop screens.
-- Paperesque's `fitfigure` shortcode still targets the theme's original column
-  width. Normal Markdown images scale automatically; override the shortcode if
-  you need its exact resize targets updated.
+- `baseURL` in `hugo.toml` — set to `https://samratghale.com.np/`. You can
+  override it for a preview by setting `BASE_URL` in Cloudflare, since
+  `build.sh` passes it through. Navigation links are relative, but canonical
+  URLs, RSS, and the sitemap use `baseURL`.
+- `title`, `author`, `copyright`, and `[params] sitename` / `description` in
+  `hugo.toml`.
+- The header menu is `[[menu.main]]` in `hugo.toml`.
+- Set `disableWebFonts = true` in `[params]` to avoid loading Google Fonts.
+- Replace the favicons in `static/` if you want your own.
+- The homepage intro in `content/_index.md` and the About page.

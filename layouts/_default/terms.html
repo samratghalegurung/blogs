@@ -1,0 +1,18 @@
+{{ partial "header.html" . }}
+
+<section id=content>
+  <h1>{{ .Title }}</h1>
+
+  <ul class=posts_listing>
+    {{ range .Data.Terms.Alphabetical }}
+      <li>
+        <h2><a href="{{ .Page.RelPermalink }}">{{ .Page.Title }}</a></h2>
+        <div class=date>
+          {{ .Count }} {{ if eq .Count 1 }}post{{ else }}posts{{ end }}
+        </div>
+      </li>
+    {{ end }}
+  </ul>
+</section>
+
+{{ partial "footer.html" . }}

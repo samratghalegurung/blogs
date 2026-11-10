@@ -60,7 +60,12 @@ main() {
 
   # Build the project.
   echo "Building the project..."
-  hugo build --gc --minify --cleanDestinationDir
+  HUGO_ARGS=(--gc --minify --cleanDestinationDir)
+  if [[ -n "${BASE_URL:-}" ]]; then
+    echo "Using BASE_URL=${BASE_URL}"
+    HUGO_ARGS+=(--baseURL "${BASE_URL}")
+  fi
+  hugo build "${HUGO_ARGS[@]}"
 }
 
 main "$@"
