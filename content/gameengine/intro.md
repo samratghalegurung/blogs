@@ -50,6 +50,8 @@ flowchart TB
 
 ```
 
+Instead of a giant big program we will apply a modular approach, where we will create small self contained libraries like Draw and Glyph which can be used independently without engine code. This will help separate responsibilties to libraries and reuseablility. There might be cases where you wouldn't require the game engine but just the font rendering, i.e writing a text editor or other non game softwares. 
+
 Lets go thru the libraries we will be using from the odin's vendor one by one.
 
 1. **Box2D**: Box2d is a physics engine which does 2d world simulation and provides many APIs and callbacks of game events. We will heavily rely on Box2D for simulation, which means we won't be writing much of physics code.

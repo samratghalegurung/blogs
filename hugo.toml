@@ -27,7 +27,9 @@ enableRobotsTXT = true
   description = "Notes on game engines, graphics programming, and software."
 
   # Footnote margin notes are on by default.
-  # disableMarginNotes = true
+  # With the wider column, floating notes can overflow on typical laptop
+  # screens, so keep footnotes inline. Remove this to re-enable margin notes.
+  disableMarginNotes = true
 
 # Links in the top-right corner of every page.
 [[params.topmenu]]

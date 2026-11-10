@@ -64,7 +64,7 @@ main :: proc() {
 }
 ```
 
-Let's talk briefly over the code, it's alright if you don't understand it right away we ill tackle it in depth later.
+Let's talk briefly over the code, it's alright if you don't understand it right away we'll tackle it in depth later.
 
 glfw.Init() initializes the library, glfw.CreateWindow creates window but also creates the required opengl context at the backend. 
 

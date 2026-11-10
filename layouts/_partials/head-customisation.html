@@ -42,6 +42,30 @@
     --color-timestamp-bkg-secondary: var(--color-link-hover);
     --color-timestamp-text: var(--color-text-for-darkbg);
   }
+
+  /* Paperesque's main column is 45rem; widen it by 50%, but keep it
+     responsive on narrower screens. */
+  @media (min-width: 720px) {
+    .content-container,
+    .content-container-narrow-pad {
+      width: min(67.5rem, calc(100% - 2em));
+    }
+  }
+
+  /* The sidebar uses a -18em offset. With the wider column it needs more
+     viewport room, so keep it stacked until there is enough space. */
+  @media (min-width: 1170px) and (max-width: 1499.98px) {
+    .sidepull-container .sidepull-side {
+      position: static;
+      width: auto;
+      margin-left: 0;
+      float: none;
+    }
+
+    .sidepull-not-when-sidebar-shown {
+      display: block;
+    }
+  }
 </style>
 <meta name="color-scheme" content="light" />
 

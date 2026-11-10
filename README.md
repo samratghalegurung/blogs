@@ -178,3 +178,11 @@ see the deploy-hook section of the Hugo documentation linked above.
   `layouts/_partials/meta.html` and `layouts/baseof.html` to remove the links.
 - Add custom CSS/JS through `layouts/_partials/head-customisation.html`.
 - The homepage sidebar in `content/_index.md` and the About page.
+- The main column is widened to `67.5rem` (1.5× Paperesque's `45rem`) in
+  `layouts/_partials/head-customisation.html`. Change the `67.5rem` value there
+  to adjust it.
+- Floating footnote margin notes are disabled with `disableMarginNotes = true`
+  because the wider column leaves less room for them on laptop screens.
+- Paperesque's `fitfigure` shortcode still targets the theme's original column
+  width. Normal Markdown images scale automatically; override the shortcode if
+  you need its exact resize targets updated.
