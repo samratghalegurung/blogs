@@ -87,10 +87,17 @@ intro appears before later posts.
 ### Images
 
 Images pasted into `content/gameengine/` next to `_index.md` are published at
-the section root, e.g. `/gameengine/Pasted%20image%2020261110144359.png`. From a
-post at `/gameengine/<post>/`, reference them with that absolute path.
+the section root. Keep the relative Markdown link that Obsidian creates:
 
-For automatic relative image links, convert the post into a page bundle:
+```markdown
+![](Pasted%20image%2020261110144359.png)
+```
+
+`layouts/_default/_markup/render-image.html` detects that the image is not a
+page-bundle resource and rewrites it to the section URL for Hugo, so it works in
+both Obsidian and the generated site.
+
+If you prefer fully self-contained posts, convert the post into a page bundle:
 
 ```text
 content/gameengine/draw/
@@ -98,8 +105,7 @@ content/gameengine/draw/
   Pasted image 20261110144359.png
 ```
 
-Then `![](Pasted%20image%2020261110144359.png)` works because Hugo publishes the
-image alongside the page.
+Then the same relative link is used directly by both Obsidian and Hugo.
 
 ### Pages
 

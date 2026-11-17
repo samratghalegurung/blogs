@@ -2,8 +2,8 @@
 +++
 date = '2026-11-09T10:14:11+05:45'
 draft = false
-title = 'Library Structure'
-slug = 'Library Structure'
+title = 'Library Structures'
+slug = 'Library Structures'
 tags = ['odin', 'game-engine', 'opengl']
 categories = ['Game Engine']
 series = ['Creating a Game Engine']

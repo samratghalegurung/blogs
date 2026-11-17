@@ -255,4 +255,4 @@ main :: proc()
 
 We get the point rendering on the window!
 
-![](/gameengine/Pasted%20image%2020261110144359.png)
+![](Pasted%20image%2020261110144359.png)

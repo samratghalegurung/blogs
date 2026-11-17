@@ -1,0 +1,12 @@
+{{- $dest := .Destination -}}
+{{- $isRemote := or (strings.HasPrefix $dest "http://") (strings.HasPrefix $dest "https://") (strings.HasPrefix $dest "//") -}}
+{{- $isAbsolute := strings.HasPrefix $dest "/" -}}
+{{- if and (not $isRemote) (not $isAbsolute) -}}
+  {{- /* Page bundles publish images next to the page; loose section posts
+         (e.g. content/gameengine/Draw.md with the image beside _index.md)
+         publish them at the section root. */ -}}
+  {{- if not (.Page.Resources.GetMatch $dest) -}}
+    {{- $dest = printf "%s%s" .Page.CurrentSection.RelPermalink $dest -}}
+  {{- end -}}
+{{- end -}}
+<img src="{{ $dest | safeURL }}" alt="{{ .Text }}"{{ with .Title }} title="{{ . }}"{{ end }}>
